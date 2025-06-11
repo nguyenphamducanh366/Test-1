@@ -1,6 +1,6 @@
 # Triển Khai Cơ Chế OAuth của Bitrix24
 
-Hướng dẫn này sẽ hướng dẫn bạn quy trình thiết lập một ứng dụng cục bộ cho Bitrix24 bằng cách sử dụng Ngrok, tích hợp OAuth và triển khai các chức năng API cần thiết.
+Hướng dẫn này sẽ giúp bạn thiết lập một ứng dụng cục bộ cho Bitrix24 bằng cách sử dụng Ngrok, tích hợp OAuth và triển khai các chức năng API cần thiết.
 
 ## Mục Lục
 
@@ -13,7 +13,7 @@ Hướng dẫn này sẽ hướng dẫn bạn quy trình thiết lập một ứ
 
 ## Yêu Cầu
 
-Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những thứ sau trên máy tính của mình:
+Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những phần mềm sau trên máy tính của mình:
 
 - Node.js (v12 trở lên)
 - npm (Trình quản lý gói Node)
@@ -25,7 +25,7 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
    - Truy cập trang web [Ngrok](https://ngrok.com/download) và tải phiên bản phù hợp với hệ điều hành của bạn.
 
 2. **Cài Đặt Ngrok**:
-   - Giải nén tệp đã tải về và đặt tệp thực thi `ngrok` vào thư mục có trong PATH của hệ thống bạn.
+   - Giải nén tệp đã tải về và đặt tệp thực thi `ngrok` vào thư mục nằm trong PATH của hệ thống bạn.
 
 3. **Xác Thực Ngrok** (tùy chọn):
    - Đăng ký tài khoản miễn phí trên Ngrok và lấy mã xác thực từ bảng điều khiển.
@@ -62,12 +62,12 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
 ## Cấu Hình Bitrix24
 
 1. **Truy Cập Tài Nguyên Lập Trình Bitrix24**:
-   - Vào tài khoản Bitrix24 của bạn, điều hướng đến **Tài nguyên cho nhà phát triển** > **Khác** > **Ứng Dụng Cục Bộ**.
+   - Đăng nhập vào tài khoản Bitrix24 của bạn, điều hướng đến **Tài nguyên cho nhà phát triển** > **Khác** > **Ứng Dụng Cục Bộ**.
 
 2. **Tạo Ứng Dụng Cục Bộ Mới**:
    - Nhấn vào **Ứng Dụng Cục Bộ**.
-   - Trong **Đường dẫn xử lý của bạn*** và **Đường dẫn cài đặt ban đầu**, nhập URL Ngrok kèm theo các đường dẫn thích hợp:
-     - Ví dụ: Đường dẫn xử lý của bạn*: `https://6fd4-116-96-46-81.ngrok-free.app/call-api`.
+   - Trong **Đường dẫn xử lý của bạn** và **Đường dẫn cài đặt ban đầu**, nhập URL Ngrok kèm theo các đường dẫn thích hợp:
+     - Ví dụ: Đường dẫn xử lý của bạn: `https://6fd4-116-96-46-81.ngrok-free.app/call-api`.
      - Ví dụ: Đường dẫn cài đặt ban đầu: `https://6fd4-116-96-46-81.ngrok-free.app/install`.
 
 3. **Đặt Văn Bản Menu**:
@@ -82,57 +82,57 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
      - Ví dụ: `BITRIX_CLIENT_SECRET=P6Vlzv2wfwGiU2gBxgs4qUEDRpNmJJKMlipeK7qssAURh9QgdQ`.
 
 6. **Nhấn Mở Ứng Dụng** để triển khai cơ chế OAuth.
-   
+
 ## Triển Khai Cơ Chế OAuth
 
 1. **Nhận Sự Kiện Cài Đặt**:
    - Tạo một route trong `server.js` để xử lý sự kiện cài đặt:
      ```javascript
      app.all('/install', (req, res) => {
-      // Xử lý logic cài đặt
-      // Lấy domain và code từ request
-      // Gọi API để lấy token
-      });
+       // Xử lý logic cài đặt
+       // Lấy domain và code từ request
+       // Gọi API để lấy token
+     });
      ```
 
 2. **Lưu Access Token và Refresh Token**:
+   ```javascript
+   const saveTokens = (tokens) => {
+     fs.writeFileSync('tokens.json', JSON.stringify(tokens));
+   };
    
-     ```javascript
-     const saveTokens = (tokens) => {
-        fs.writeFileSync('tokens.json', JSON.stringify(tokens));
-      };
-      
-      const getTokens = () => {
-        return JSON.parse(fs.readFileSync('tokens.json'));
-      };
-     ```
+   const getTokens = () => {
+     return JSON.parse(fs.readFileSync('tokens.json'));
+   };
+   ```
 
 3. **Gia Hạn Token Khi Hết Hạn**:
-     ```javascript
-     async function callBitrixAPI(method, params = {}) {
-        try {
-          // Gọi API
-        } catch (error) {
-          if (error.response?.data?.error === 'expired_token') {
-            // Refresh token
-            const newTokens = await axios.post(`https://${tokens.domain}/oauth/token/`, {
-              grant_type: 'refresh_token',
-              // ... thông tin client
-            });
-            saveTokens(newTokens.data);
-            return callBitrixAPI(method, params); // Gọi lại API
-          }
-        }
-      }
-     ```
-     4. **Gọi API bất kỳ với token**:
-     ```javascript
-     app.post('/call-api', async (req, res) => {
-        const { method, params } = req.body;
-        const response = await callBitrixAPI(method, params);
-        res.json(response.data);
-      });
-     ```
+   ```javascript
+   async function callBitrixAPI(method, params = {}) {
+     try {
+       // Gọi API
+     } catch (error) {
+       if (error.response?.data?.error === 'expired_token') {
+         // Refresh token
+         const newTokens = await axios.post(`https://${tokens.domain}/oauth/token/`, {
+           grant_type: 'refresh_token',
+           // ... thông tin client
+         });
+         saveTokens(newTokens.data);
+         return callBitrixAPI(method, params); // Gọi lại API
+       }
+     }
+   }
+   ```
+
+4. **Gọi API bất kỳ với token**:
+   ```javascript
+   app.post('/call-api', async (req, res) => {
+     const { method, params } = req.body;
+     const response = await callBitrixAPI(method, params);
+     res.json(response.data);
+   });
+   ```
 
 ## Kết Luận
 
