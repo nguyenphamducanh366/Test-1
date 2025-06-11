@@ -89,9 +89,9 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
    - Tạo một route trong `server.js` để xử lý sự kiện cài đặt:
      ```javascript
      app.all('/install', (req, res) => {
-      Xử lý logic cài đặt
-      Lấy domain và code từ request
-      Gọi API để lấy token
+      // Xử lý logic cài đặt
+      // Lấy domain và code từ request
+      // Gọi API để lấy token
       });
      ```
 
