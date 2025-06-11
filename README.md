@@ -8,10 +8,7 @@ Hướng dẫn này sẽ hướng dẫn bạn quy trình thiết lập một ứ
 2. [Cài Đặt Ngrok](#cài-đặt-ngrok)
 3. [Thiết Lập Máy Chủ Cục Bộ](#thiết-lập-máy-chủ-cục-bộ)
 4. [Cấu Hình Bitrix24](#cấu-hình-bitrix24)
-5. [Triển Khai Cơ Chế OAuth](#triển-khai-cơ-chế-oauth)
-6. [Gọi APIs](#gọi-apis)
-7. [Xử Lý Lỗi](#xử-lý-lỗi)
-8. [Kết Luận](#kết-luận)
+5. [Kết Luận](#kết-luận)
 
 ## Yêu Cầu
 
@@ -84,66 +81,6 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
      - Ví dụ: `BITRIX_CLIENT_SECRET=P6Vlzv2wfwGiU2gBxgs4qUEDRpNmJJKMlipeK7qssAURh9QgdQ`.
 
 6. **Nhấn Mở Ứng Dụng** để triển khai cơ chế OAuth.
-
-## Triển Khai Cơ Chế OAuth
-
-1. **Nhận Sự Kiện Cài Đặt**:
-   - Tạo một route trong `server.js` để xử lý sự kiện cài đặt:
-     ```javascript
-     app.all('/install', (req, res) => {
-       // Xử lý logic cài đặt ở đây
-     });
-     ```
-
-2. **Lưu Access Token và Refresh Token**:
-   - Sử dụng một hàm để lưu token vào tệp hoặc cơ sở dữ liệu:
-     ```javascript
-     const saveTokens = (tokens) => {
-       fs.writeFileSync('tokens.json', JSON.stringify(tokens));
-     };
-     ```
-
-3. **Gia Hạn Token Khi Hết Hạn**:
-   - Triển khai logic để làm mới token khi chúng hết hạn:
-     ```javascript
-     const callBitrixAPI = async (method, params = {}) => {
-       // Kiểm tra tính hợp lệ của token và làm mới nếu cần
-     };
-     ```
-
-## Gọi APIs
-
-1. **Tạo Hàm Gọi API**:
-   - Định nghĩa một hàm để gọi các API Bitrix24 bằng cách sử dụng access token đã lưu:
-     ```javascript
-     app.post('/call-api', async (req, res) => {
-       const { method, params } = req.body;
-       // Gọi API và trả về phản hồi
-     });
-     ```
-
-2. **Ví Dụ Gọi API**:
-   - Ví dụ, để lấy danh bạ:
-     ```javascript
-     app.get('/get-contacts', async (req, res) => {
-       const response = await callBitrixAPI('crm.contact.list');
-       res.json(response.data);
-     });
-     ```
-
-## Xử Lý Lỗi
-
-1. **Xử Lý Lỗi**:
-   - Triển khai xử lý lỗi cho các cuộc gọi API:
-     ```javascript
-     try {
-       // Logic gọi API
-     } catch (error) {
-       // Xử lý các loại lỗi khác nhau (ví dụ: timeout, token hết hạn)
-       console.error('Lỗi API:', error.message);
-       res.status(500).send('Cuộc gọi API thất bại');
-     }
-     ```
 
 ## Kết Luận
 
