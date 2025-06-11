@@ -68,8 +68,8 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những th�
 
 2. **Tạo Ứng Dụng Cục Bộ Mới**:
    - Nhấn vào **Ứng Dụng Cục Bộ**.
-   - Trong **Đường dẫn xử lý của bạn** và **Đường dẫn cài đặt ban đầu**, nhập URL Ngrok kèm theo các đường dẫn thích hợp:
-     - Ví dụ: Đường dẫn cài đặt ban đầu: `https://6fd4-116-96-46-81.ngrok-free.app/call-api`.
+   - Trong **Đường dẫn xử lý của bạn*** và **Đường dẫn cài đặt ban đầu**, nhập URL Ngrok kèm theo các đường dẫn thích hợp:
+     - Ví dụ: Đường dẫn xử lý của bạn*: `https://6fd4-116-96-46-81.ngrok-free.app/call-api`.
      - Ví dụ: Đường dẫn cài đặt ban đầu: `https://6fd4-116-96-46-81.ngrok-free.app/install`.
 
 3. **Đặt Văn Bản Menu**:
