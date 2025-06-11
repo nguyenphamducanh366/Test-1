@@ -154,14 +154,6 @@ const callBitrixAPI = async (method, params = {}) => {
   }
 };
 
-app.get('/get-contacts', async (req, res) => {
-  try {
-    const response = await callBitrixAPI('crm.contact.list');
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).send('Lỗi gọi API');
-  }
-});
 
 app.post('/call-api', async (req, res) => {
   try {
