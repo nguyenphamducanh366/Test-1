@@ -86,7 +86,6 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt những ph�
 ## Triển Khai Cơ Chế OAuth
 
 1. **Nhận Sự Kiện Cài Đặt**:
-   - Tạo một route trong `server.js` để xử lý sự kiện cài đặt:
      ```javascript
      app.all('/install', (req, res) => {
        // Xử lý logic cài đặt
